@@ -5,7 +5,7 @@
 
 Usage:
     scdl -l <track_url> [-a | -f | -C | -t | -p][-c | --force-metadata][-n <maxtracks>]\
-[-o <offset>][--hidewarnings][--debug | --error][--path <path>][--addtofile][--addtimestamp]
+[-o <offset>][--i1 <index1>][--i2 <index2>][--hidewarnings][--debug | --error][--path <path>][--addtofile][--addtimestamp]\
 [--onlymp3][--hide-progress][--min-size <size>][--max-size <size>][--remove][--no-album-tag]
 [--no-playlist-folder][--download-archive <file>][--extract-artist][--flac]
     scdl me (-s | -a | -f | -t | -p | -m)[-c | --force-metadata][-n <maxtracks>]\
@@ -29,6 +29,9 @@ Options:
     -C                          Download all commented by a user
     -p                          Download all playlists of a user
     -m                          Download all liked and owned playlists of user
+    -q                          Index to start
+    --i1 [index1]                Index to start
+    --i2 [index2]                Index to end
     -c                          Continue if a downloaded file already exists
     --force-metadata            This will set metadata on already downloaded track
     -o [offset]                 Begin with a custom offset
@@ -135,6 +138,21 @@ def main():
 
     logger.info('Soundcloud Downloader')
     logger.debug(arguments)
+
+    if arguments['--i1'] is not None:
+        try:
+            arguments["--i1"] = int(arguments["--i1"])
+        except:
+            logger.error('I1 error')
+            sys.exit(-1)
+
+    if arguments["--i2"] is not None:
+        try:
+            arguments["--i2"] = int(arguments["--i2"])
+        except:
+            logger.error('I2 error')
+            sys.exit(-1)
+    
 
     if arguments['-o'] is not None:
         try:
@@ -359,6 +377,10 @@ def download(user, dl_type, name):
     total = len(resources)
     logger.info('Retrieved {0} {1}'.format(total, name))
     for counter, item in enumerate(resources, offset):
+        if (arguments["--i1"] is not None) and counter < arguments["--i1"]:
+            continue
+        if (arguments["--i2"] is not None) and counter > arguments["--i2"]:
+            break
         try:
             logger.debug(item)
             logger.info('{0} n°{1} of {2}'.format(
