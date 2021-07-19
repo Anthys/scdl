@@ -4,8 +4,9 @@
 This script is able to download music from SoundCloud and set id3tag to the downloaded music.
 Compatible with Windows, OS X, Linux.
 
-> I added integer bounds for the track indices (for example download fav tracks from index 2 to 10 of the soundcloud page)
-> I should remake the whole arguments infrastructure, I find it really awful. *parser* would make it way more modulable
+> I added integer bounds for the track indices (for example download fav tracks from index 2 to 10 of the soundcloud page).
+
+> I should remake the whole arguments infrastructure, I find it really awful. *parser* would make it way more modulable.
 
 ## System requirements
 
